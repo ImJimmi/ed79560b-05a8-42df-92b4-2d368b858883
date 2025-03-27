@@ -1,0 +1,25 @@
+on: push
+
+jobs:
+  sync-with-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: crowdin/github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ vars.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        with:
+          create_pull_request: true
+          download_translations: true
+          localization_branch_name: crowdin-auto-sync/${{ github.event.pull_request.head.ref }}
+          pull_request_base_branch_name: ${{ github.event.pull_request.base.ref }}
+          pull_request_title: '💬 Crowdin localisation for `${{ github.event.pull_request.head.ref }}`'
+          skip_untranslated_strings: true
+          upload_sources: true
+          upload_translations: true

@@ -1,5 +1,7 @@
 on: push
 
+name: Foo
+
 jobs:
   sync-with-crowdin:
     runs-on: ubuntu-latest
